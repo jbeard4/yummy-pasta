@@ -3,16 +3,6 @@ module.exports = function(grunt) {
         browserName: "firefox",
         version: "19",
         platform: "XP"
-    }, {
-        browserName: "googlechrome",
-        platform: "XP"
-    }, {
-        browserName: "googlechrome",
-        platform: "linux"
-    }, {
-        browserName: "internet explorer",
-        platform: "WIN8",
-        version: "10"
     }];
 
     grunt.initConfig({
@@ -76,6 +66,19 @@ module.exports = function(grunt) {
                 }
             }
         },
+        'saucelabs-custom': {
+            all: {
+                options: {
+                    urls: ["http://127.0.0.1:9999/custom/index.html"],
+                    tunnelTimeout: 5,
+                    build: process.env.TRAVIS_JOB_ID,
+                    concurrency: 3,
+                    browsers: browsers,
+                    testname: "custom tests",
+                    tags: ["master"]
+                }
+            }
+        },
         watch: {}
     });
 
@@ -85,5 +88,5 @@ module.exports = function(grunt) {
     }
 
     grunt.registerTask("dev", ["connect", "watch"]);
-    grunt.registerTask("test", ["connect", "saucelabs-jasmine", "saucelabs-qunit", "saucelabs-mocha", "saucelabs-yui"]);
+    grunt.registerTask("test", ["connect", "saucelabs-jasmine", "saucelabs-mocha", "saucelabs-qunit", "saucelabs-yui",  "saucelabs-custom"]);
 };
